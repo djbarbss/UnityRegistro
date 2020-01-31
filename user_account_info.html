@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Regisro - Success</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <!-- <font size="3.0" face="Kristen ITC">  -->
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <!-- <tr>
+            <td colspan='3' bgcolor='#20416c'>
+                    <ul class='menu'>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                    </ul>
+            </td>
+        </tr> -->
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                        <center>
+                            <h2>
+                                Some Account Info
+                            </h2>
+                        </center>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='/home'>Events</a></li>
+                    <li> <a href="/teams">Teams</a> </li>
+                    <li> <a href="/create_team">Create Team</a> </li>
+                    <li> <a href="/leaderboards">Leaderboards</a> </li>
+                    <li> <a href="#">Account Info</a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+    </script>
+</body>
+</html>
