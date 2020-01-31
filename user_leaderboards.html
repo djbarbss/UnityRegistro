@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro - Leaderboards</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <!-- <font size="3.0" face="Kristen ITC">  -->
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                            <h2 align="center">Leaderboards</h2>
+                            <div class="alignment">
+                                <div class="left">
+                                    <table class="custom_table">
+                                        <tr>
+                                            <th colspan="2">Solo</th>
+                                        </tr>
+                                        <% solo.forEach(function(user) { %> 
+                                        <tr>
+                                            <td>
+                                                <%- user.first_name + " " + user.last_name %>
+                                            </td>
+                                            <td>
+                                                &nbsp; <b><%- user.points %></b> 
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                    </table>
+                                </div>
+                                <div class="right">
+                                        <table class="custom_table">
+                                            <tr>
+                                                <th colspan="2">Cosplay</th>
+                                            </tr>
+                                            <% cosplay.forEach(function(user) { %> 
+                                            <tr>
+                                                <td>
+                                                    <%- user.first_name + " " + user.last_name %>
+                                                </td>
+                                                <td>
+                                                    &nbsp; <b><%- user.points %></b> 
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                        </table>
+                                </div>
+                                <div class="center">
+                                        <table class="custom_table">
+                                            <tr>
+                                                <th colspan="2">Teams</th>
+
+                                            </tr>
+                                            <% teams.forEach(function(team) { %> 
+                                                <tr>
+                                                    <td>
+                                                        <%- team.team_name %>
+                                                    </td>
+                                                    <td>
+                                                        &nbsp; <b><%- team.points %></b> 
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </table>
+                                </div>
+                            </div>
+                            <h2></h2>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='/home'>Events</a></li>
+                    <li> <a href="/teams">Teams</a> </li>
+                    <li> <a href="/create_team">Create Team</a> </li>
+                    <li> <a href="#"><u>Leaderboards</u></a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+    </script>
+</body>
+</html>
