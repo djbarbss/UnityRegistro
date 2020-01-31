@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro - Event Info</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <!-- <font size="3.0" face="Kristen ITC">  -->
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                            <h2 align="center"><%- event.event_name %></h2>
+                                <p align="center">
+                                    Date: <b><%- moment(event.event_date).format('MMM-DD-YYYY') %></b><br>
+                                    Category: <b><%- event.event_category %></b> <br>
+                                    Prize Pool:  <b>₱ <%- event.prize_pool %></b> <br>
+                                    <% if(event.event_category === "eSport (Team Tournament)") { %>
+                                        No. of Participants: <b><%- reg_teams.length %>/<%- event.max_participants %></b> <br>
+                                    <% } else { %>
+                                        No. of Participants: <b><%- reg_users.length %>/<%- event.max_participants %></b> <br>
+                                    <% } %>
+                                    Venue: <b><%- event.venue %></b><br>
+                                </p>
+                                <hr>
+                                <% if(event.event_category === "eSport (Team Tournament)") { %>
+                                    <% if(event.status_team === 0 && user_teams.length > 0) { %>
+                                        <% if(registered)  { %>
+                                            <center>
+                                            <form method="post" style="display: inline-block;" action="/api/unjoin_event_team">
+                                                <input type="hidden" name="team_id" value="<%= team.id %>" >
+                                                <select disabled>
+                                                        <option><%= team.team_name %></option>
+                                                </select>
+                                                <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                <button><b>Cancel registration</b></button>
+                                            </form>
+                                            </center>
+                                        <% } else { %>
+                                            <center>
+                                                <% if(reg_teams.length < event.max_participants) { %>
+                                                <form method="post" style="display: inline-block;" action="/api/join_event_team">
+                                                    <select name="team_id">
+                                                        <% user_teams.forEach(function(team) {%>
+                                                            <option value="<%- team.id %>"><%- team.team_name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                    <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                    <button><b>Register my team</b></button>
+                                                </form>
+                                                <% } else { %>
+                                                    <b>Registration is full</b>
+                                                <% } %>
+                                            </center>
+                                        <% } %>
+                                    <% } else { %>
+                                        <center>
+                                        <% if(event.status_team === 0) { %>
+                                          <b>Create a team or contact your team leader now to register!</b>
+                                        <% } else { %>
+                                            <h3>Winner: <u><%- winner.team_name %></u></h3>
+                                        <% } %>
+                                        </center>
+                                    <% } %>
+                                    <% if(reg_teams.length > 0 ) { %>
+                                        <hr>
+                                        <table id="custom_table">
+                                                <tr>
+                                                    <th>Participants</th>
+                                                </tr>
+                                                <% reg_teams.forEach(function(team) { %>
+                                                    <tr>
+                                                        <td><%- team.team_name %></td>
+                                                    </tr>
+                                                <% }) %>
+                                        </table>
+                                    <% } %>
+                                <% } else if(event.event_category === "Cosplay") {  %>
+                                    <center>
+                                        <% if(event.status_cosplay === 0)  { %>
+                                            <% if(registered)  { %>
+                                                <form method="post" style="display: inline-block;" action="/api/unjoin_event_cosplay">
+                                                    <input type="hidden" name="user_id" value="<%= user_id %>" >
+                                                    <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                    <button><b>Cancel My Registration</b></button>
+                                                </form>
+                                            <% } else { %>
+                                                    <% if(reg_users.length < event.max_participants) { %>
+                                                        <form method="post" style="display: inline-block;" action="/api/join_event_cosplay">
+                                                            <input type="hidden" name="user_id" value="<%= user_id %>" >
+                                                            <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                            <button><b>Register Me</b></button>
+                                                        </form>
+                                                    <% } else { %>
+                                                        <b>Registration is full</b>
+                                                    <% } %>
+                                            <% } %>
+                                            <% if(reg_users.length > 0) { %>
+                                            <hr>
+                                            <table id="custom_table">
+                                                <tr>
+                                                    <th>Participants</th>
+                                                </tr>
+                                                <% reg_users.forEach(function(user) { %>
+                                                    <tr>
+                                                        <td><%- user.first_name + " " + user.last_name %></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </table>
+                                            <% } %>
+                                        <% } else { %>
+                                            <center>
+                                                <h3>Winner: <u><%- winner.first_name + " " + winner.last_name %></u></h3>
+                                            </center>
+                                            <hr>
+                                            <table id="custom_table">
+                                                <tr>
+                                                    <th>Participants</th>
+                                                </tr>
+                                                <% reg_users.forEach(function(user) { %>
+                                                    <tr>
+                                                        <td><%- user.first_name + " " + user.last_name %></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </table>
+                                        <% } %>
+                                    </center>
+                                <% } else {%>
+                                    <center>
+                                        <% if(event.status_solo === 0)  { %>
+                                            <% if(registered)  { %>
+                                                <form method="post" style="display: inline-block;" action="/api/unjoin_event_solo">
+                                                    <input type="hidden" name="user_id" value="<%= user_id %>" >
+                                                    <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                    <button><b>Cancel My Registration</b></button>
+                                                </form>
+                                            <% } else { %>
+                                                    <% if(reg_users.length < event.max_participants) { %>
+                                                        <form method="post" style="display: inline-block;" action="/api/join_event_solo">
+                                                            <input type="hidden" name="user_id" value="<%= user_id %>" >
+                                                            <input type="hidden" name="event_id" value="<%= event.id %>">
+                                                            <button><b>Register Me</b></button>
+                                                        </form>
+                                                    <% } else { %>
+                                                        <b>Registration is full</b>
+                                                    <% } %>
+                                            <% } %>
+                                            <% if(reg_users.length > 0) { %>
+                                            <hr>
+                                            <table id="custom_table">
+                                                <tr>
+                                                    <th>Participants</th>
+                                                </tr>
+                                                <% reg_users.forEach(function(user) { %>
+                                                    <tr>
+                                                        <td><%- user.first_name + " " + user.last_name %></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </table>
+                                            <% } %>
+                                        <% } else { %>
+                                            <center>
+                                                <h3>Winner: <u><%- winner.first_name + " " + winner.last_name %></u></h3>
+                                            </center>
+                                            <hr>
+                                            <table id="custom_table">
+                                                <tr>
+                                                    <th>Participants</th>
+                                                </tr>
+                                                <% reg_users.forEach(function(user) { %>
+                                                    <tr>
+                                                        <td><%- user.first_name + " " + user.last_name %></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </table>
+                                        <% } %>
+                                    </center>
+                                <% } %>
+                            <h2></h2>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='/home'>Events</a></li>
+                    <li> <a href="/teams">Teams</a> </li>
+                    <li> <a href="/create_team">Create Team</a> </li>
+                    <li> <a href="/leaderboards">Leaderboards</a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+    </script>
+</body>
+</html>
