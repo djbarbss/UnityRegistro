@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro - Event Info</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <!-- <font size="3.0" face="Kristen ITC">  -->
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                            <h2 align="center"><%= team.team_name %></h2>
+                                <h4 align="center">
+                                   <u>Members</u>
+                                </h4>
+                                <table id="custom_table">
+                                    <tr>
+                                        <td align="center">
+                                            <%= leader.first_name %> <%= leader.last_name %> (Leader)
+                                        </td>
+                                    </tr>
+                                    <% members.forEach(function(member){ %>
+                                    <tr>
+                                        <td>
+                                            <%= member.first_name %> <%= member.last_name %>
+                                            <% if(user_id === leader.id) { %>
+                                            &nbsp;
+                                            <form method="post" action="/api/remove_member" style="display: inline-block;">
+                                                <input type="hidden" name="user_id" value="<%= member.id %>">
+                                                <input type="hidden" name="team_id" value="<%= team.id %>">
+                                                <button onclick="return confirm('Remove member from team?')">Remove Member</button>
+                                            </form> 
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </table>
+                                <br />
+                                <% if(user_id === leader.id) { %>
+                                <center>
+                                    <form method="post" action="/api/add_team_member">
+                                        <input type="hidden" value="<%= team.id %>" name="team_id">
+                                        <input type="hidden" value="<%= leader.id %>" name="leader_id">
+                                        <input type="search" name="username" placeholder="Username or email" required>
+                                        <button><b>Add Member</b></button> 
+                                    </form>
+                                    <br>
+                                    <form method="post" action="/api/disband_team">
+                                        <input type="hidden" value="<%= team.id %>" name="team_id">
+                                        <button onclick="return confirm('Disband this team?')"><b>Disband Team</b></button>    
+                                    </form>
+                                </center>
+                                <% } else { %>
+                                <center>
+                                    <form method="post" action="/api/leave_team">
+                                        <input type="hidden" value="<%= team.id %>" name="team_id">
+                                        <input type="hidden" value="<%= user_id %>" name="user_id">
+                                        <button onclick="return confirm('Leave this team?')"><b>Leave Team</b></button>    
+                                    </form> 
+                                </center>
+                                <% } %>
+                            <h2></h2>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='/home'>Events</a></li>
+                    <li> <a href="/teams">Teams</a> </li>
+                    <li> <a href="/create_team">Create Team</a> </li>
+                    <li> <a href="/leaderboards">Leaderboards</a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+    </script>
+</body>
+</html>
