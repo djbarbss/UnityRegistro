@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro - Events</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                            <h2 align="center">EVENTS</h2>
+                            <table id="custom_table">
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>No. of Participants</th>
+                                <th>Prize Pool (₱)</th>
+                                <th>Venue</th>
+                                <th>Action</th>
+                            </tr>
+                            <% events.forEach(function(event){ %>
+                            <tr>
+                                <td>
+                                    <%- event.event_name %>
+                                </td>
+                                <td>
+                                    <%- event.event_category %>
+                                </td>
+                                <td>
+                                    <%- moment(event.event_date).format('MMM-DD-YYYY') %>
+                                </td>
+                                <td>
+                                    <% if(event.event_category === "eSport (Team Tournament)") { %>
+                                        <%- event.team %>/<%- event.max_participants %>
+                                    <% } else if(event.event_category === "Cosplay") { %>
+                                        <%- event.cosplay %>/<%- event.max_participants %>
+                                    <% } else { %>
+                                        <%- event.solo %>/<%- event.max_participants %>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <%- event.prize_pool %>
+                                </td>
+                                <td>
+                                    <%- event.venue %>
+                                </td>
+                                <td>
+                                    <a href="/event/<%- event.id %>"><button>View</button></a>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %>
+                            </table>
+                            <h2></h2>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='#'><u>Events</u></a></li>
+                    <li> <a href="/teams">Teams</a> </li>
+                    <li> <a href="/create_team">Create Team</a> </li>
+                    <li> <a href="/leaderboards">Leaderboards</a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+    </script>
+</body>
+</html>
