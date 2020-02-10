@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro - Administrator</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+<style>
+</style>
+</head>
+<body>
+    <center>
+    <table style='width: 768px;' >
+        <tr>
+            <td class='banner' colspan='3' align='center'>
+                <h1><u>Registro</u></h1></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2' class='content' valign='top'>
+                <div class='article'>
+                    <div class='article_content'>
+                            <h2 align="center">Staffs</h2>
+                            <table id="custom_table">
+                            <tr>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Email</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th></th>
+                            </tr>
+                            <% staffs.forEach(function(staff){ %>
+                            <tr>
+                                <td>
+                                    <%- staff.last_name %>
+                                </td>
+                                <td>
+                                    <%- staff.first_name %>
+                                </td>
+                                <td>
+                                    <%- staff.email %>
+                                </td>
+                                <td>
+                                    <%- staff.username %>
+                                </td>
+                                <td>
+                                    <span style="display: none;" id="<%- staff.id %>"><%- staff.password -%></span>
+                                </td>
+                                <td>
+                                    <button onclick='toggle_password("<%- staff.id %>")'>Show/Hide Password</button>
+                                    <form method="post" action="/api/delete_staff">
+                                        <input type="hidden" name="account_id" value="<%- staff.id %>">
+                                        <button onclick="return confirm('This staff will be permanently deleted. Continue?')">Delete</button>
+                                    </form>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %>
+                            </table>
+                            <h2></h2>
+                    </div>
+                </div>
+            </td>
+            <td class='aside'>
+                <ul>
+                    <li> <a href='#'><u>Administer Staffs</u></a></li>
+                    <li> <a href="/add_staff">Add Staff</a> </li>
+                    <li> <a id="btn-logout" href="#">Logout</a> </li>
+                </ul>
+            </td>
+            <form id="form-logout" method="post" action="/api/logout"></form>
+        </tr>
+    </table>
+    </center>
+    <script>
+        var form = document.getElementById("form-logout");
+
+        document.getElementById("btn-logout").addEventListener("click", function () {
+            form.submit();
+        });
+
+        function toggle_password(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
